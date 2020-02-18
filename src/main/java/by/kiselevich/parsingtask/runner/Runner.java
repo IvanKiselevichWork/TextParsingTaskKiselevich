@@ -3,6 +3,7 @@ package by.kiselevich.parsingtask.runner;
 import by.kiselevich.parsingtask.entity.TextComponent;
 import by.kiselevich.parsingtask.exception.TextParseException;
 import by.kiselevich.parsingtask.parser.*;
+import by.kiselevich.parsingtask.replacer.ExpressionToValueReplacer;
 
 public class Runner {
     public static void main(String[] args) {
@@ -30,6 +31,9 @@ public class Runner {
 
             String out = textComponent.toString();
             System.out.println(out);
+
+            System.out.println("\n\n ---------");
+            System.out.println(new ExpressionToValueReplacer().replaceExpressionsToValues(sourceText));
         } catch (TextParseException e) {
             e.printStackTrace();
         }
