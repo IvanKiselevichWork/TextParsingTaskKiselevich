@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 public abstract class AbstractParser {
 
-    private static final String EMPTY_STRING = "";
     private static final int TEXT_COMPONENT_GROUP_INDEX = 1;
     private static final int COMPONENT_DELIMITER_GROUP_INDEX = 2;
 
