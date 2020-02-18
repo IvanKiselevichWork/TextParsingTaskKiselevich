@@ -5,14 +5,19 @@ import java.util.Iterator;
 public class TextLeaf implements TextComponent {
 
     private TextComponentType textComponentType = TextComponentType.SYMBOL;
-    private Character value;
+    private Character character;
 
-    public TextLeaf(Character value) {
-        this.value = value;
+    public TextLeaf(Character character) {
+        this.character = character;
     }
 
     @Override
-    public void add(TextComponent textComponent) {
+    public void addTextComponent(TextComponent textComponent) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void addComponentDelimiter(String string) {
         throw new UnsupportedOperationException();
     }
 
@@ -22,8 +27,8 @@ public class TextLeaf implements TextComponent {
     }
 
     @Override
-    public void print() {
-        System.out.println(value);
+    public String toString() {
+        return String.valueOf(character);
     }
 
     @Override

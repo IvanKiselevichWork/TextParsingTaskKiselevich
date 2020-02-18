@@ -6,17 +6,26 @@ import java.util.List;
 
 public class TextComposite implements TextComponent {
 
+    private static final String EMPTY_STRING = "";
+
     private List<TextComponent> textComponents;
     private TextComponentType textComponentType;
+    private List<String> componentDelimiters;
 
     public TextComposite(TextComponentType textComponentType) {
         textComponents = new LinkedList<>();
+        componentDelimiters = new LinkedList<>();
         this.textComponentType = textComponentType;
     }
 
     @Override
-    public void add(TextComponent textComponent) {
-        textComponent.add(textComponent);
+    public void addTextComponent(TextComponent textComponent) {
+        textComponents.add(textComponent);
+    }
+
+    @Override
+    public void addComponentDelimiter(String string) {
+        componentDelimiters.add(string);
     }
 
     @Override
@@ -25,10 +34,15 @@ public class TextComposite implements TextComponent {
     }
 
     @Override
-    public void print() {
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        Iterator<String> delimiterIterator = componentDelimiters.iterator();
+        String delimiter;
         for (TextComponent textComponent : textComponents) {
-            textComponent.print();
+            delimiter = delimiterIterator.next();
+            stringBuilder.append(textComponent.toString()).append(delimiter != null ? delimiter : EMPTY_STRING);
         }
+        return stringBuilder.toString();
     }
 
     @Override

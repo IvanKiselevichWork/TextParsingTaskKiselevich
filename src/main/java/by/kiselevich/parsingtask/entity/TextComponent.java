@@ -4,11 +4,13 @@ import java.util.Iterator;
 
 public interface TextComponent {
 
-    void add(TextComponent textComponent);
+    void addTextComponent(TextComponent textComponent);
+
+    void addComponentDelimiter(String string);
 
     Object getTextComponent(int index);
 
-    void print();
+    String toString();
 
     void remove(TextComponent textComponent);
 
