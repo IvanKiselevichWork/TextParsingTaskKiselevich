@@ -3,7 +3,6 @@ package by.kiselevich.parsingtask.runner;
 import by.kiselevich.parsingtask.entity.TextComponent;
 import by.kiselevich.parsingtask.exception.TextParseException;
 import by.kiselevich.parsingtask.parser.*;
-import by.kiselevich.parsingtask.replacer.ExpressionToValueReplacer;
 
 public class Runner {
     public static void main(String[] args) {
@@ -12,6 +11,7 @@ public class Runner {
                 "\tIt is a (4^5|1&2<<(2|5>>2&71))|1200 established fact that a reader will be of a page when looking at its layout.\n" +
                 "\tBye.\n";
 
+        AbstractParser expressionParser = new ExpressionToValueParser();
         AbstractParser textParser = new TextToParagraphsParser();
         AbstractParser paragraphParser = new ParagraphToSentencesParser();
         AbstractParser sentenceParser = new SentenceToLexemesParser();
@@ -19,7 +19,7 @@ public class Runner {
         AbstractParser wordParser = new WordToSymbolsParser();
         AbstractParser symbolParser = new SymbolToTextLeafParser();
 
-
+        expressionParser.setNextParser(textParser);
         textParser.setNextParser(paragraphParser);
         paragraphParser.setNextParser(sentenceParser);
         sentenceParser.setNextParser(lexemeParser);
@@ -27,12 +27,12 @@ public class Runner {
         wordParser.setNextParser(symbolParser);
 
         try {
-            TextComponent textComponent = textParser.parse(sourceText);
+            TextComponent textComponent = expressionParser.parse(sourceText);
 
-            String out = textComponent.toString();
-            System.out.println(out);
-            System.out.println("---------");
-            System.out.println(new ExpressionToValueReplacer().replaceExpressionsToValues(sourceText));
+            System.out.println("---------Source:");
+            System.out.println(sourceText);
+            System.out.println("---------After replacing and parsing");
+            System.out.println(textComponent.toString());
 
         } catch (TextParseException e) {
             e.printStackTrace();

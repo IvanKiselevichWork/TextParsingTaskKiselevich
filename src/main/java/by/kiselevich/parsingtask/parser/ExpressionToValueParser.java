@@ -1,21 +1,24 @@
-package by.kiselevich.parsingtask.replacer;
+package by.kiselevich.parsingtask.parser;
 
+import by.kiselevich.parsingtask.entity.TextComponent;
+import by.kiselevich.parsingtask.exception.TextParseException;
 import by.kiselevich.parsingtask.exception.WrongExpressionException;
+import by.kiselevich.parsingtask.reversepolishnotationtools.InfixToReversePolishNotationParser;
+import by.kiselevich.parsingtask.reversepolishnotationtools.ReversePolishNotationCalculator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ExpressionToValueReplacer {
+public class ExpressionToValueParser extends AbstractParser {
 
-    private static final Logger LOG = LogManager.getLogger(ExpressionToValueReplacer.class);
+    private static final Logger LOG = LogManager.getLogger(ExpressionToValueParser.class);
     private static final String EXPRESSION_REGEX = "(?m)(~|~\\(*|\\(*~|\\()?\\d+(\\.\\d+)?(( *\\)* *)([-+*\\/&\\|^]|<<|>>) *~* *\\(* *~* *\\d+(\\.\\d+)?\\)*)+";
     private static final String WRONG_EXPRESSION = "WRONG EXPRESSION";
-    private InfixToReversePolishNotationParser notationConverter = new InfixToReversePolishNotationParser();
 
-    public String replaceExpressionsToValues(String source) {
-
+    @Override
+    public TextComponent parse(String source) throws TextParseException {
         Pattern pattern = Pattern.compile(EXPRESSION_REGEX);
         Matcher matcher = pattern.matcher(source);
         StringBuffer stringBuffer = new StringBuffer();
@@ -30,11 +33,14 @@ public class ExpressionToValueReplacer {
             matcher.appendReplacement(stringBuffer, expressionResult);
         }
         matcher.appendTail(stringBuffer);
-        return stringBuffer.toString();
+        return nextParser.parse(stringBuffer.toString());
     }
 
     private int calculateExpression(String expression) throws WrongExpressionException {
         ReversePolishNotationCalculator calculator = new ReversePolishNotationCalculator();
+        InfixToReversePolishNotationParser notationConverter = new InfixToReversePolishNotationParser();
+
         return calculator.calculateExpressionInReversePolishNotation(notationConverter.convertInfixToReversePolishNotation(expression));
     }
+
 }

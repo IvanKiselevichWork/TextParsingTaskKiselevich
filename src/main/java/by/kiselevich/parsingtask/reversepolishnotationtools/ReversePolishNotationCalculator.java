@@ -1,8 +1,7 @@
-package by.kiselevich.parsingtask.replacer;
+package by.kiselevich.parsingtask.reversepolishnotationtools;
 
 import by.kiselevich.parsingtask.exception.WrongExpressionException;
 
-import javax.naming.OperationNotSupportedException;
 import java.util.EmptyStackException;
 import java.util.LinkedList;
 import java.util.Stack;
