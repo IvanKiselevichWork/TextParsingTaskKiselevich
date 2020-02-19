@@ -2,9 +2,9 @@ package by.kiselevich.parsingtask.parser;
 
 import by.kiselevich.parsingtask.entity.TextComponentType;
 
-public class LexemeToWordParser extends AbstractParser {
+public class LexemeToWordsParser extends AbstractParser {
 
-    public LexemeToWordParser() {
+    public LexemeToWordsParser() {
         regex = "(?m)(\\w+)(\\W*)";
         textComponentType = TextComponentType.LEXEME;
     }

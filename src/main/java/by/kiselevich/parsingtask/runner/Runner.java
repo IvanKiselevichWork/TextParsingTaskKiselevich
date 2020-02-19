@@ -15,8 +15,8 @@ public class Runner {
         AbstractParser textParser = new TextToParagraphsParser();
         AbstractParser paragraphParser = new ParagraphToSentencesParser();
         AbstractParser sentenceParser = new SentenceToLexemesParser();
-        AbstractParser lexemeParser = new LexemeToWordParser();
-        AbstractParser wordParser = new WordToSymbolParser();
+        AbstractParser lexemeParser = new LexemeToWordsParser();
+        AbstractParser wordParser = new WordToSymbolsParser();
         AbstractParser symbolParser = new SymbolToTextLeafParser();
 
 
