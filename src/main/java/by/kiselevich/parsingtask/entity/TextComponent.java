@@ -16,5 +16,11 @@ public interface TextComponent {
 
     TextComponentType getType();
 
-    Iterator<TextComponent> getIterator();
+    Iterator<TextComponent> getComponentIterator();
+
+    Iterator<String> getComponentDelimiterIterator();
+
+    int componentsCount();
+
+    void clear();
 }

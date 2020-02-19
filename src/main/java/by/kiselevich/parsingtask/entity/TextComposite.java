@@ -56,7 +56,23 @@ public class TextComposite implements TextComponent {
     }
 
     @Override
-    public Iterator<TextComponent> getIterator() {
+    public Iterator<TextComponent> getComponentIterator() {
         return textComponents.iterator();
+    }
+
+    @Override
+    public Iterator<String> getComponentDelimiterIterator() {
+        return componentDelimiters.iterator();
+    }
+
+    @Override
+    public int componentsCount() {
+        return textComponents.size();
+    }
+
+    @Override
+    public void clear() {
+        textComponents.clear();
+        componentDelimiters.clear();
     }
 }

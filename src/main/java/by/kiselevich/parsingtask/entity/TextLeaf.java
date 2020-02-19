@@ -42,7 +42,22 @@ public class TextLeaf implements TextComponent {
     }
 
     @Override
-    public Iterator<TextComponent> getIterator() {
+    public Iterator<TextComponent> getComponentIterator() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Iterator<String> getComponentDelimiterIterator() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int componentsCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
         throw new UnsupportedOperationException();
     }
 }
