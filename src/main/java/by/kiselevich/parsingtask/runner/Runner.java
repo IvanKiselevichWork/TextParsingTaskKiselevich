@@ -31,10 +31,8 @@ public class Runner {
 
             String out = textComponent.toString();
             System.out.println(out);
-
-            System.out.println("\n\n ---------");
+            System.out.println("---------");
             System.out.println(new ExpressionToValueReplacer().replaceExpressionsToValues(sourceText));
-
 
         } catch (TextParseException e) {
             e.printStackTrace();
