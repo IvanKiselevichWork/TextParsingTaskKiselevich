@@ -18,6 +18,9 @@ public abstract class AbstractParser {
     protected String regex;
 
     public TextComponent parse(String sourceText) throws TextParseException {
+        if (sourceText == null) {
+            throw new TextParseException();
+        }
         TextComponent textComponent = new TextComposite(textComponentType);
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceText);
