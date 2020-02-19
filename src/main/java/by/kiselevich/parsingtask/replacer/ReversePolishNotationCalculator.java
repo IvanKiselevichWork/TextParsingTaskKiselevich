@@ -23,7 +23,7 @@ public class ReversePolishNotationCalculator {
                         stack.push(makeOperation(operand, value1, 0));
                     } else {
                         int value2 = stack.pop();
-                        stack.push(makeOperation(operand, value1, value2));
+                        stack.push(makeOperation(operand, value2, value1));
                     }
                 }
             }
