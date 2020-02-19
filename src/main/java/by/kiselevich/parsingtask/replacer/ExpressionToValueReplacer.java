@@ -5,7 +5,9 @@ import java.util.regex.Pattern;
 
 public class ExpressionToValueReplacer {
 
-    private static final String EXPRESSION_REGEX = "(?m)(~|~\\(*|\\(*~|\\()?\\d+(\\.\\d+)?(( *\\)* *)([-+*\\/&\\|^]|<<|>>) *~* *\\(* *~* *\\d+(\\.\\d+)?)+";
+    private static final String EXPRESSION_REGEX = "(?m)(~|~\\(*|\\(*~|\\()?\\d+(\\.\\d+)?(( *\\)* *)([-+*\\/&\\|^]|<<|>>) *~* *\\(* *~* *\\d+(\\.\\d+)?\\)*)+";
+    private InfixToReversePolishNotationParser notationConverter = new InfixToReversePolishNotationParser();
+
 
     public String replaceExpressionsToValues(String source) {
 
@@ -20,7 +22,12 @@ public class ExpressionToValueReplacer {
     }
 
     private String calculateExpression(String expression) {
-        System.out.println(expression);
+        System.out.print(expression + " -> ");
+        String result = "";
+        for(String string : notationConverter.convertInfixToReversePolishNotation(expression)) {
+            result += string + " ";
+        }
+        System.out.println(result);
         return "NULL";
     }
 }

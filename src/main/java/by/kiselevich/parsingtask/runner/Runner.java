@@ -34,6 +34,8 @@ public class Runner {
 
             System.out.println("\n\n ---------");
             System.out.println(new ExpressionToValueReplacer().replaceExpressionsToValues(sourceText));
+
+
         } catch (TextParseException e) {
             e.printStackTrace();
         }
