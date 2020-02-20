@@ -1,4 +1,4 @@
-package by.kiselevich.parsingtask.reversepolishnotationtools;
+package by.kiselevich.parsingtask.utils;
 
 import by.kiselevich.parsingtask.exception.WrongExpressionException;
 

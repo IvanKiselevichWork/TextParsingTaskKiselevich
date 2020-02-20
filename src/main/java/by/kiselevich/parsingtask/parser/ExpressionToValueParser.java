@@ -3,8 +3,8 @@ package by.kiselevich.parsingtask.parser;
 import by.kiselevich.parsingtask.entity.TextComponent;
 import by.kiselevich.parsingtask.exception.TextParseException;
 import by.kiselevich.parsingtask.exception.WrongExpressionException;
-import by.kiselevich.parsingtask.reversepolishnotationtools.InfixToReversePolishNotationParser;
-import by.kiselevich.parsingtask.reversepolishnotationtools.ReversePolishNotationCalculator;
+import by.kiselevich.parsingtask.utils.InfixToReversePolishNotationParser;
+import by.kiselevich.parsingtask.utils.ReversePolishNotationCalculator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

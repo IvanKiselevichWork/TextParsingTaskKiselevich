@@ -1,4 +1,4 @@
-package by.kiselevich.parsingtask.reversepolishnotationtools;
+package by.kiselevich.parsingtask.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
