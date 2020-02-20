@@ -1,12 +1,16 @@
 package by.kiselevich.parsingtask.runner;
 
 import by.kiselevich.parsingtask.entity.TextComponent;
+import by.kiselevich.parsingtask.entity.TextComponentType;
 import by.kiselevich.parsingtask.exception.SortException;
 import by.kiselevich.parsingtask.exception.TextParseException;
 import by.kiselevich.parsingtask.parser.*;
 import by.kiselevich.parsingtask.sorter.ParagraphsBySentenceCountSorter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 public class Runner {
 
@@ -19,19 +23,17 @@ public class Runner {
                 "\tBye.\n";
 
         AbstractParser expressionParser = new ExpressionToValueParser();
-        AbstractParser textParser = new TextToParagraphsParser();
-        AbstractParser paragraphParser = new ParagraphToSentencesParser();
-        AbstractParser sentenceParser = new SentenceToLexemesParser();
-        AbstractParser lexemeParser = new LexemeToWordsParser();
-        AbstractParser wordParser = new WordToSymbolsParser();
-        AbstractParser symbolParser = new SymbolToTextLeafParser();
-
-        expressionParser.setNextParser(textParser);
-        textParser.setNextParser(paragraphParser);
-        paragraphParser.setNextParser(sentenceParser);
-        sentenceParser.setNextParser(lexemeParser);
-        lexemeParser.setNextParser(wordParser);
-        wordParser.setNextParser(symbolParser);
+        AbstractParser nextParser = expressionParser;
+        AbstractParser parser;
+        for (TextComponentType textComponentType : TextComponentType.values()) {
+            if (textComponentType != TextComponentType.SYMBOL) {
+                parser = new TextComponentParser(textComponentType);
+            } else {
+                parser = new SymbolToTextLeafParser();
+            }
+            nextParser.setNextParser(parser);
+            nextParser = parser;
+        }
 
         try {
             TextComponent textComponent = expressionParser.parse(sourceText);

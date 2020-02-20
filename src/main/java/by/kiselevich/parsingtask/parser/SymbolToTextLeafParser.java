@@ -1,6 +1,7 @@
 package by.kiselevich.parsingtask.parser;
 
 import by.kiselevich.parsingtask.entity.TextComponent;
+import by.kiselevich.parsingtask.entity.TextComponentType;
 import by.kiselevich.parsingtask.entity.TextLeaf;
 import by.kiselevich.parsingtask.exception.TextParseException;
 
@@ -10,9 +11,9 @@ public class SymbolToTextLeafParser extends AbstractParser {
     private static final int MINIMUM_REQUIRED_STRING_LENGTH = 1;
 
     public SymbolToTextLeafParser() {
-        regex = null;
-        textComponentType = null;
-        nextParser = null;
+        this.regex = null;
+        this.textComponentType = TextComponentType.SYMBOL;
+        this.nextParser = null;
     }
 
     @Override
