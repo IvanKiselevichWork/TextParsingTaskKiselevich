@@ -22,7 +22,7 @@ public abstract class AbstractParser {
     }
 
     public TextComponent parse(String sourceText) throws TextParseException {
-        if (sourceText == null) {
+        if (sourceText == null || nextParser == null) {
             throw new TextParseException();
         }
         TextComponent textComponent = new TextComposite(textComponentType);
