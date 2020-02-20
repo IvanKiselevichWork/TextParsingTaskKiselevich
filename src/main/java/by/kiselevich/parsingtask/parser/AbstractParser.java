@@ -17,6 +17,10 @@ public abstract class AbstractParser {
     protected TextComponentType textComponentType;
     protected String regex;
 
+    public AbstractParser() {
+
+    }
+
     public TextComponent parse(String sourceText) throws TextParseException {
         if (sourceText == null) {
             throw new TextParseException();
