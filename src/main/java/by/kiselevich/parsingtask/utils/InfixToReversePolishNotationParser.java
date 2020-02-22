@@ -11,9 +11,9 @@ public class InfixToReversePolishNotationParser {
 
     public List<String> convertInfixToReversePolishNotation(String expression) {
 
-        expression = expression.replaceAll(" ", "");
+        expression = expression.replace(" ", "");
         List<String> result = new ArrayList<>();
-        Stack<String> stack = new Stack<>();
+        Deque<String> stack = new ArrayDeque<>();
         int index = 0;
         while (index < expression.length()) {
             if (Character.isDigit(expression.charAt(index))) {
@@ -30,12 +30,12 @@ public class InfixToReversePolishNotationParser {
                 String number = expression.substring(numberStart, index);
                 result.add(number);
             } else if (expression.charAt(index) == '~' || expression.charAt(index) == '(') {
-                stack.push(String.valueOf(expression.charAt(index)));
+                stack.addFirst(String.valueOf(expression.charAt(index)));
                 index++;
             } else if (expression.charAt(index) == ')') {
                 String stackElement;
                 try {
-                    while (!(stackElement = stack.pop()).equals("(")) {
+                    while (!(stackElement = stack.removeFirst()).equals("(")) {
                         result.add(stackElement);
                     }
                 } catch (NoSuchElementException e) {
@@ -54,20 +54,20 @@ public class InfixToReversePolishNotationParser {
 
                 String stackElement;
                 while (!stack.isEmpty()) {
-                    stackElement = stack.pop();
+                    stackElement = stack.removeFirst();
                     if (stackElement.equals("~") || getOperationPriority(stackElement) < getOperationPriority(operation)) {
                         result.add(stackElement);
                     } else {
-                        stack.push(stackElement);
+                        stack.addFirst(stackElement);
                         break;
                     }
                 }
-                stack.add(operation);
+                stack.addFirst(operation);
                 index++;
             }
         }
         while (!stack.isEmpty()) {
-            result.add(stack.pop());
+            result.add(stack.removeFirst());
         }
         return result;
     }

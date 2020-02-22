@@ -2,9 +2,7 @@ package by.kiselevich.parsingtask.utils;
 
 import by.kiselevich.parsingtask.exception.WrongExpressionException;
 
-import java.util.EmptyStackException;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class ReversePolishNotationCalculator {
@@ -12,22 +10,22 @@ public class ReversePolishNotationCalculator {
     public int calculateExpressionInReversePolishNotation(List<String> expression) throws WrongExpressionException {
 
         try {
-            Stack<Integer> stack = new Stack<>();
+            Deque<Integer> stack = new ArrayDeque<>();
             for (String operand : expression) {
                 if (isNumber(operand)) {
-                    stack.push(Integer.parseInt(operand));
+                    stack.addFirst(Integer.parseInt(operand));
                 } else {
-                    int value1 = stack.pop();
+                    int value1 = stack.removeFirst();
                     if (operand.equals("~")) {
-                        stack.push(makeOperation(operand, value1, 0));
+                        stack.addFirst(makeOperation(operand, value1, 0));
                     } else {
-                        int value2 = stack.pop();
-                        stack.push(makeOperation(operand, value2, value1));
+                        int value2 = stack.removeFirst();
+                        stack.addFirst(makeOperation(operand, value2, value1));
                     }
                 }
             }
 
-            return stack.pop();
+            return stack.removeFirst();
         } catch (EmptyStackException e) {
             throw new WrongExpressionException("Wrong expression", e);
         }
