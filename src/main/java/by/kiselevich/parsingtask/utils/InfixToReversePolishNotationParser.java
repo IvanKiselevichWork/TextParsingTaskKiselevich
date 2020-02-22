@@ -9,10 +9,10 @@ public class InfixToReversePolishNotationParser {
 
     private static final Logger LOG = LogManager.getLogger(InfixToReversePolishNotationParser.class);
 
-    public LinkedList<String> convertInfixToReversePolishNotation(String expression) {
+    public List<String> convertInfixToReversePolishNotation(String expression) {
 
         expression = expression.replaceAll(" ", "");
-        LinkedList<String> result = new LinkedList<>();
+        List<String> result = new ArrayList<>();
         Stack<String> stack = new Stack<>();
         int index = 0;
         while (index < expression.length()) {

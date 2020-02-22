@@ -3,13 +3,13 @@ package by.kiselevich.parsingtask.utils;
 import by.kiselevich.parsingtask.exception.WrongExpressionException;
 
 import java.util.EmptyStackException;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 import java.util.regex.Pattern;
 
 public class ReversePolishNotationCalculator {
 
-    public int calculateExpressionInReversePolishNotation(LinkedList<String> expression) throws WrongExpressionException {
+    public int calculateExpressionInReversePolishNotation(List<String> expression) throws WrongExpressionException {
 
         try {
             Stack<Integer> stack = new Stack<>();
