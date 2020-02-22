@@ -7,6 +7,8 @@ import java.io.*;
 public class SourceTextReader {
 
     private static final String FILE_IS_NULL_EXCEPTION_MESSAGE = "File is null";
+    private static final int BUFFER_SIZE = 100;
+    private static final int EOF_BYTES_COUNT = -1;
 
     private File file;
 
@@ -34,9 +36,10 @@ public class SourceTextReader {
         StringBuilder result = new StringBuilder();
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                result.append(line);
+            int bytesRead;
+            char[] buffer = new char[BUFFER_SIZE];
+            while ((bytesRead = br.read(buffer)) != EOF_BYTES_COUNT) {
+                result.append(buffer, 0, bytesRead);
             }
         } catch (IOException e) {
             throw new SourceTextReaderException(e);
