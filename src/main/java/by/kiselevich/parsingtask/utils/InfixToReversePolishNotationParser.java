@@ -15,61 +15,27 @@ public class InfixToReversePolishNotationParser {
 
     private static final Logger LOG = LogManager.getLogger(InfixToReversePolishNotationParser.class);
 
+    private int index;
+
     public List<String> convertInfixToReversePolishNotation(String expression) {
 
         expression = expression.replace(SINGLE_SPACE, EMPTY_STRING);
         List<String> result = new ArrayList<>();
         Deque<String> stack = new ArrayDeque<>();
-        int index = 0;
+        index = 0;
         while (index < expression.length()) {
             if (Character.isDigit(expression.charAt(index))) {
-                int numberStart = index;
-                while (index < expression.length() && Character.isDigit(expression.charAt(index))) {
-                    index++;
-                }
-                if (index < expression.length() && expression.charAt(index) == SINGLE_DOT) {
-                    index++;
-                    while (index < expression.length() && Character.isDigit(expression.charAt(index))) {
-                        index++;
-                    }
-                }
-                String number = expression.substring(numberStart, index);
-                result.add(number);
+                index = putNumberToResult(expression, result, index);
             } else if (expression.charAt(index) == NOT_OPERATOR.charAt(0) || expression.charAt(index) == OPENING_BRACKET_OPERATOR.charAt(0)) {
                 stack.addFirst(String.valueOf(expression.charAt(index)));
                 index++;
             } else if (expression.charAt(index) == CLOSING_BRACKET_OPERATOR.charAt(0)) {
-                String stackElement;
-                try {
-                    while (!(stackElement = stack.removeFirst()).equals(OPENING_BRACKET_OPERATOR)) {
-                        result.add(stackElement);
-                    }
-                } catch (NoSuchElementException e) {
-                    LOG.warn("Incorrect expression");
+                if (!putOperatorsFromStackToResultUntilFoundOpeningBracket(result, stack)) {
                     return new ArrayList<>();
                 }
-                index++;
             } else {
-                String operation;
-                if (expression.charAt(index) == LEFT_SHIFT_OPERATOR.charAt(0) || expression.charAt(index) == RIGHT_SHIFT_OPERATOR.charAt(0)) {
-                    operation = expression.substring(index, index + 2);
-                    index++;
-                } else {
-                    operation = expression.substring(index, index + 1);
-                }
-
-                String stackElement;
-                while (!stack.isEmpty()) {
-                    stackElement = stack.removeFirst();
-                    if (stackElement.equals(NOT_OPERATOR) || getOperationPriority(stackElement) < getOperationPriority(operation)) {
-                        result.add(stackElement);
-                    } else {
-                        stack.addFirst(stackElement);
-                        break;
-                    }
-                }
-                stack.addFirst(operation);
-                index++;
+                String operator = getOperatorAsString(expression);
+                index = putHighPriorityOperatorsFromStackToResult(result, stack, index, operator);
             }
         }
         while (!stack.isEmpty()) {
@@ -78,8 +44,65 @@ public class InfixToReversePolishNotationParser {
         return result;
     }
 
-    private int getOperationPriority(String operation) {
-        switch (operation) {
+    private boolean putOperatorsFromStackToResultUntilFoundOpeningBracket(List<String> result, Deque<String> stack) {
+        String stackElement;
+        try {
+            while (!(stackElement = stack.removeFirst()).equals(OPENING_BRACKET_OPERATOR)) {
+                result.add(stackElement);
+            }
+        } catch (NoSuchElementException e) {
+            LOG.warn("Incorrect expression");
+            return false;
+        }
+        index++;
+        return true;
+    }
+
+    private String getOperatorAsString(String expression) {
+        String operator;
+        if (expression.charAt(index) == LEFT_SHIFT_OPERATOR.charAt(0) || expression.charAt(index) == RIGHT_SHIFT_OPERATOR.charAt(0)) {
+            operator = expression.substring(index, index + 2);
+            index++;
+        } else {
+            operator = expression.substring(index, index + 1);
+        }
+        return operator;
+    }
+
+    private int putHighPriorityOperatorsFromStackToResult(List<String> result, Deque<String> stack, int index, String currentOperator) {
+        String stackElement;
+        while (!stack.isEmpty()) {
+            stackElement = stack.removeFirst();
+            if (getOperatorPriority(stackElement) < getOperatorPriority(currentOperator)) {
+                result.add(stackElement);
+            } else {
+                stack.addFirst(stackElement);
+                break;
+            }
+        }
+        stack.addFirst(currentOperator);
+        index++;
+        return index;
+    }
+
+    private int putNumberToResult(String expression, List<String> result, int index) {
+        int numberStart = index;
+        while (index < expression.length() && Character.isDigit(expression.charAt(index))) {
+            index++;
+        }
+        if (index < expression.length() && expression.charAt(index) == SINGLE_DOT) {
+            index++;
+            while (index < expression.length() && Character.isDigit(expression.charAt(index))) {
+                index++;
+            }
+        }
+        String number = expression.substring(numberStart, index);
+        result.add(number);
+        return index;
+    }
+
+    private int getOperatorPriority(String operator) {
+        switch (operator) {
             case NOT_OPERATOR:
                 return 1;
             case MULTIPLICATION_OPERATOR:
