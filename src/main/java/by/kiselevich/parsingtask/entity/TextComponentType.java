@@ -1,8 +1,8 @@
 package by.kiselevich.parsingtask.entity;
 
 public enum TextComponentType {
-    TEXT("(?m)\t*.+\n*\t*"),
-    PARAGRAPH("(?m)(?s)([^\\.!?]+)([\\.!?]+)\n*\t*"),
+    TEXT("(?m)(?s)[^\n]+[\r\n\t]*"),
+    PARAGRAPH("(?m)(?s)([^\\.!?]+)([\\.!?]+)[\r\n\t]*"),
     SENTENCE("(?m)([^ ]+)( *)"),
     LEXEME("(?m)(\\W|\\D)*(\\w|\\d)+(\\W|\\D)*"),
     WORD("(?m)(.|\n)"),
