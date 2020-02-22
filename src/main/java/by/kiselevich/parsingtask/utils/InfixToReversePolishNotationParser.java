@@ -5,13 +5,19 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
+import static by.kiselevich.parsingtask.utils.OperatorConstant.*;
+
 public class InfixToReversePolishNotationParser {
+
+    private static final String SINGLE_SPACE = " ";
+    private static final String EMPTY_STRING = "";
+    private static final char SINGLE_DOT = '.';
 
     private static final Logger LOG = LogManager.getLogger(InfixToReversePolishNotationParser.class);
 
     public List<String> convertInfixToReversePolishNotation(String expression) {
 
-        expression = expression.replace(" ", "");
+        expression = expression.replace(SINGLE_SPACE, EMPTY_STRING);
         List<String> result = new ArrayList<>();
         Deque<String> stack = new ArrayDeque<>();
         int index = 0;
@@ -21,7 +27,7 @@ public class InfixToReversePolishNotationParser {
                 while (index < expression.length() && Character.isDigit(expression.charAt(index))) {
                     index++;
                 }
-                if (index < expression.length() && expression.charAt(index) == '.') {
+                if (index < expression.length() && expression.charAt(index) == SINGLE_DOT) {
                     index++;
                     while (index < expression.length() && Character.isDigit(expression.charAt(index))) {
                         index++;
@@ -29,23 +35,23 @@ public class InfixToReversePolishNotationParser {
                 }
                 String number = expression.substring(numberStart, index);
                 result.add(number);
-            } else if (expression.charAt(index) == '~' || expression.charAt(index) == '(') {
+            } else if (expression.charAt(index) == NOT_OPERATOR.charAt(0) || expression.charAt(index) == OPENING_BRACKET_OPERATOR.charAt(0)) {
                 stack.addFirst(String.valueOf(expression.charAt(index)));
                 index++;
-            } else if (expression.charAt(index) == ')') {
+            } else if (expression.charAt(index) == CLOSING_BRACKET_OPERATOR.charAt(0)) {
                 String stackElement;
                 try {
-                    while (!(stackElement = stack.removeFirst()).equals("(")) {
+                    while (!(stackElement = stack.removeFirst()).equals(OPENING_BRACKET_OPERATOR)) {
                         result.add(stackElement);
                     }
                 } catch (NoSuchElementException e) {
                     LOG.warn("Incorrect expression");
-                    return new LinkedList<>();
+                    return new ArrayList<>();
                 }
                 index++;
             } else {
                 String operation;
-                if (expression.charAt(index) == '<' || expression.charAt(index) == '>') {
+                if (expression.charAt(index) == LEFT_SHIFT_OPERATOR.charAt(0) || expression.charAt(index) == RIGHT_SHIFT_OPERATOR.charAt(0)) {
                     operation = expression.substring(index, index + 2);
                     index++;
                 } else {
@@ -55,7 +61,7 @@ public class InfixToReversePolishNotationParser {
                 String stackElement;
                 while (!stack.isEmpty()) {
                     stackElement = stack.removeFirst();
-                    if (stackElement.equals("~") || getOperationPriority(stackElement) < getOperationPriority(operation)) {
+                    if (stackElement.equals(NOT_OPERATOR) || getOperationPriority(stackElement) < getOperationPriority(operation)) {
                         result.add(stackElement);
                     } else {
                         stack.addFirst(stackElement);
@@ -74,25 +80,25 @@ public class InfixToReversePolishNotationParser {
 
     private int getOperationPriority(String operation) {
         switch (operation) {
-            case "~":
+            case NOT_OPERATOR:
                 return 1;
-            case "*":
-            case "/":
+            case MULTIPLICATION_OPERATOR:
+            case DIVISION_OPERATOR:
                 return 2;
-            case "+":
-            case "-":
+            case ADDITION_OPERATOR:
+            case SUBTRACTION_OPERATOR:
                 return 3;
-            case "<<":
-            case ">>":
+            case LEFT_SHIFT_OPERATOR:
+            case RIGHT_SHIFT_OPERATOR:
                 return 4;
-            case "&":
+            case AND_OPERATOR:
                 return 5;
-            case "^":
+            case POWER_OPERATOR:
                 return 6;
-            case "|":
+            case OR_OPERATOR:
                 return 7;
-            case "(":
-            case ")":
+            case OPENING_BRACKET_OPERATOR:
+            case CLOSING_BRACKET_OPERATOR:
                 return 9;
             default:
                 return 10;

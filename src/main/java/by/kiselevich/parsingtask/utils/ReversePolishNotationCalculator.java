@@ -5,7 +5,14 @@ import by.kiselevich.parsingtask.exception.WrongExpressionException;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import static by.kiselevich.parsingtask.utils.OperatorConstant.*;
+
 public class ReversePolishNotationCalculator {
+
+    private static final String WRONG_OPERATOR_EXCEPTION_MESSAGE = "Wrong operation: ";
+    private static final String WRONG_EXPRESSION_EXCEPTION_MESSAGE = "Wrong operation: ";
+
+    private static final String IS_NUMBER_REGEX = "\\d+(\\.\\d+)?";
 
     public int calculateExpressionInReversePolishNotation(List<String> expression) throws WrongExpressionException {
 
@@ -16,7 +23,7 @@ public class ReversePolishNotationCalculator {
                     stack.addFirst(Integer.parseInt(operand));
                 } else {
                     int value1 = stack.removeFirst();
-                    if (operand.equals("~")) {
+                    if (operand.equals(NOT_OPERATOR)) {
                         stack.addFirst(makeOperation(operand, value1, 0));
                     } else {
                         int value2 = stack.removeFirst();
@@ -24,43 +31,41 @@ public class ReversePolishNotationCalculator {
                     }
                 }
             }
-
             return stack.removeFirst();
         } catch (EmptyStackException e) {
-            throw new WrongExpressionException("Wrong expression", e);
+            throw new WrongExpressionException(WRONG_EXPRESSION_EXCEPTION_MESSAGE, e);
         }
     }
 
     private int makeOperation(String operation, int value1, int value2) throws WrongExpressionException {
         switch (operation) {
-            case "~":
+            case NOT_OPERATOR:
                 return ~value1;
-            case "*":
+            case MULTIPLICATION_OPERATOR:
                 return value1 * value2;
-            case "/":
+            case DIVISION_OPERATOR:
                 return value1 / value2;
-            case "+":
+            case ADDITION_OPERATOR:
                 return value1 + value2;
-            case "-":
+            case SUBTRACTION_OPERATOR:
                 return value1 - value2;
-            case "<<":
+            case LEFT_SHIFT_OPERATOR:
                 return value1 << value2;
-            case ">>":
+            case RIGHT_SHIFT_OPERATOR:
                 return value1 >> value2;
-            case "&":
+            case AND_OPERATOR:
                 return value1 & value2;
-            case "^":
+            case POWER_OPERATOR:
                 return value1 ^ value2;
-            case "|":
+            case OR_OPERATOR:
                 return value1 | value2;
             default:
-                throw new WrongExpressionException("Wrong operation: " + operation);
+                throw new WrongExpressionException(WRONG_OPERATOR_EXCEPTION_MESSAGE + operation);
         }
     }
 
     private boolean isNumber(String operand) {
-        String regex = "\\d+(\\.\\d+)?";
-        Pattern pattern = Pattern.compile(regex);
+        Pattern pattern = Pattern.compile(IS_NUMBER_REGEX);
         return pattern.matcher(operand).matches();
     }
 }
