@@ -10,6 +10,9 @@ import java.util.regex.Pattern;
 
 public abstract class AbstractParser {
 
+    private static final String SOURCE_TEXT_IS_NULL_EXCEPTION_MESSAGE = "Source text is null";
+    private static final String NEXT_PARSER_IS_NULL_EXCEPTION_MESSAGE = "Next parser is null";
+
     protected AbstractParser nextParser;
     protected TextComponentType textComponentType;
     protected String regex;
@@ -19,8 +22,11 @@ public abstract class AbstractParser {
     }
 
     public TextComponent parse(String sourceText) throws TextParseException {
-        if (sourceText == null || nextParser == null) {
-            throw new TextParseException();
+        if (sourceText == null) {
+            throw new TextParseException(SOURCE_TEXT_IS_NULL_EXCEPTION_MESSAGE);
+        }
+        if (nextParser == null) {
+            throw new TextParseException(NEXT_PARSER_IS_NULL_EXCEPTION_MESSAGE);
         }
         TextComponent textComponent = new TextComposite(textComponentType);
         Pattern pattern = Pattern.compile(regex);
