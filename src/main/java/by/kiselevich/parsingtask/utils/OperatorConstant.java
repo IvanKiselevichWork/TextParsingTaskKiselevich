@@ -1,11 +1,13 @@
 package by.kiselevich.parsingtask.utils;
 
+import by.kiselevich.parsingtask.exception.OperatorConstantException;
+
 public final class OperatorConstant {
 
     private static final String CONSTRUCTOR_EXCEPTION_MESSAGE = "Operator constants class";
 
-    private OperatorConstant() {
-        throw new IllegalStateException(CONSTRUCTOR_EXCEPTION_MESSAGE);
+    private OperatorConstant() throws OperatorConstantException {
+        throw new OperatorConstantException(CONSTRUCTOR_EXCEPTION_MESSAGE);
     }
 
     public static final String NOT_OPERATOR = "~";
