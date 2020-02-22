@@ -13,13 +13,16 @@ public class InfixToReversePolishNotationParser {
     private static final String SINGLE_SPACE = " ";
     private static final String EMPTY_STRING = "";
     private static final char SINGLE_DOT = '.';
+    private static final String EXPRESSION_IS_NULL_EXCEPTION_MESSAGE = "Expression is null";
 
     private static final Logger LOG = LogManager.getLogger(InfixToReversePolishNotationParser.class);
 
     private int index;
 
     public List<String> convertInfixToReversePolishNotation(String expression) throws WrongExpressionException {
-
+        if (expression == null) {
+            throw new WrongExpressionException(EXPRESSION_IS_NULL_EXCEPTION_MESSAGE);
+        }
         expression = expression.replace(SINGLE_SPACE, EMPTY_STRING);
         List<String> result = new ArrayList<>();
         Deque<String> stack = new ArrayDeque<>();
