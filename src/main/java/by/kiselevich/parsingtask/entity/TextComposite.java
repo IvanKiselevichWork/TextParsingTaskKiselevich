@@ -6,26 +6,17 @@ import java.util.List;
 
 public class TextComposite implements TextComponent {
 
-    private static final String EMPTY_STRING = "";
-
     private List<TextComponent> textComponents;
     private TextComponentType textComponentType;
-    private List<String> componentDelimiters;
 
     public TextComposite(TextComponentType textComponentType) {
         textComponents = new LinkedList<>();
-        componentDelimiters = new LinkedList<>();
         this.textComponentType = textComponentType;
     }
 
     @Override
     public void addTextComponent(TextComponent textComponent) {
         textComponents.add(textComponent);
-    }
-
-    @Override
-    public void addComponentDelimiter(String string) {
-        componentDelimiters.add(string);
     }
 
     @Override
@@ -36,11 +27,8 @@ public class TextComposite implements TextComponent {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        Iterator<String> delimiterIterator = componentDelimiters.iterator();
-        String delimiter;
         for (TextComponent textComponent : textComponents) {
-            delimiter = delimiterIterator.next();
-            stringBuilder.append(textComponent.toString()).append(delimiter != null ? delimiter : EMPTY_STRING);
+            stringBuilder.append(textComponent.toString());
         }
         return stringBuilder.toString();
     }
@@ -61,11 +49,6 @@ public class TextComposite implements TextComponent {
     }
 
     @Override
-    public Iterator<String> getComponentDelimiterIterator() {
-        return componentDelimiters.iterator();
-    }
-
-    @Override
     public int componentsCount() {
         return textComponents.size();
     }
@@ -73,6 +56,5 @@ public class TextComposite implements TextComponent {
     @Override
     public void clear() {
         textComponents.clear();
-        componentDelimiters.clear();
     }
 }

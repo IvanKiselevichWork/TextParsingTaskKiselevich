@@ -18,14 +18,9 @@ public class ParagraphsBySentenceCountSorter {
         Comparator<TextComponent> componentComparator = Comparator.comparing(TextComponent::componentsCount);
 
         List<TextComponent> paragraphs = new ArrayList<>();
-        Map<TextComponent, String> paragraphToDelimiterMap = new HashMap<>();
         Iterator<TextComponent> paragraphIterator = textComponent.getComponentIterator();
-        Iterator<String> paragraphDelimiterIterator = textComponent.getComponentDelimiterIterator();
-        TextComponent tempComponent;
         while (paragraphIterator.hasNext()) {
-            tempComponent = paragraphIterator.next();
-            paragraphs.add(tempComponent);
-            paragraphToDelimiterMap.put(tempComponent, paragraphDelimiterIterator.next());
+            paragraphs.add(paragraphIterator.next());
         }
 
         paragraphs.sort(componentComparator);
@@ -34,7 +29,6 @@ public class ParagraphsBySentenceCountSorter {
 
         for (TextComponent paragraph : paragraphs) {
             textComponent.addTextComponent(paragraph);
-            textComponent.addComponentDelimiter(paragraphToDelimiterMap.get(paragraph));
         }
 
     }

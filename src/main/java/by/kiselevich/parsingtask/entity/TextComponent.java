@@ -6,8 +6,6 @@ public interface TextComponent {
 
     void addTextComponent(TextComponent textComponent);
 
-    void addComponentDelimiter(String string);
-
     Object getTextComponent(int index);
 
     String toString();
@@ -17,8 +15,6 @@ public interface TextComponent {
     TextComponentType getType();
 
     Iterator<TextComponent> getComponentIterator();
-
-    Iterator<String> getComponentDelimiterIterator();
 
     int componentsCount();
 

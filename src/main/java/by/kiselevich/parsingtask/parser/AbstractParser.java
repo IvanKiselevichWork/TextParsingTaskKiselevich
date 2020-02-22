@@ -10,9 +10,6 @@ import java.util.regex.Pattern;
 
 public abstract class AbstractParser {
 
-    private static final int TEXT_COMPONENT_GROUP_INDEX = 1;
-    private static final int COMPONENT_DELIMITER_GROUP_INDEX = 2;
-
     protected AbstractParser nextParser;
     protected TextComponentType textComponentType;
     protected String regex;
@@ -29,8 +26,10 @@ public abstract class AbstractParser {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(sourceText);
         while (matcher.find()) {
-            textComponent.addTextComponent(nextParser.parse(matcher.group(TEXT_COMPONENT_GROUP_INDEX)));
-            textComponent.addComponentDelimiter(matcher.group(COMPONENT_DELIMITER_GROUP_INDEX));
+            textComponent.addTextComponent(nextParser.parse(matcher.group()));
+        }
+        if (textComponent.componentsCount() == 0) {
+            textComponent.addTextComponent(nextParser.parse(sourceText));
         }
         return textComponent;
     }

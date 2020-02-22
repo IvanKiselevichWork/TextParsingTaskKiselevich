@@ -1,11 +1,11 @@
 package by.kiselevich.parsingtask.entity;
 
 public enum TextComponentType {
-    TEXT("(?m)(.+)(\n*\t*)"),
-    PARAGRAPH("(?m)([^\\.!?]+)([\\.!?]+)"),
+    TEXT("(?m)\t*.+\n*\t*"),
+    PARAGRAPH("(?m)(?s)([^\\.!?]+)([\\.!?]+)\n*\t*"),
     SENTENCE("(?m)([^ ]+)( *)"),
-    LEXEME("(?m)([\\w\\d]+)(\\W*)"),
-    WORD("(?m)(\\w+?)(\\W*)"),
+    LEXEME("(?m)(\\W|\\D)*(\\w|\\d)+(\\W|\\D)*"),
+    WORD("(?m)(.|\n)"),
     SYMBOL("");
 
     private final String regex;

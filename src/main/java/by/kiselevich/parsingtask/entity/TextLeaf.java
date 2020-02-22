@@ -17,11 +17,6 @@ public class TextLeaf implements TextComponent {
     }
 
     @Override
-    public void addComponentDelimiter(String string) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public Object getTextComponent(int index) {
         throw new UnsupportedOperationException();
     }
@@ -43,11 +38,6 @@ public class TextLeaf implements TextComponent {
 
     @Override
     public Iterator<TextComponent> getComponentIterator() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Iterator<String> getComponentDelimiterIterator() {
         throw new UnsupportedOperationException();
     }
 
