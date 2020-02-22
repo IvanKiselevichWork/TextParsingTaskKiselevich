@@ -32,7 +32,7 @@ public class ReversePolishNotationCalculator {
                 }
             }
             return stack.removeFirst();
-        } catch (EmptyStackException e) {
+        } catch (NoSuchElementException e) {
             throw new WrongExpressionException(WRONG_EXPRESSION_EXCEPTION_MESSAGE, e);
         }
     }
