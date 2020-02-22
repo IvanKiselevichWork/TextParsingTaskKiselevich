@@ -9,9 +9,6 @@ import by.kiselevich.parsingtask.sorter.ParagraphsBySentenceCountSorter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 public class Runner {
 
     private static final Logger LOG = LogManager.getLogger(Runner.class);
@@ -23,29 +20,31 @@ public class Runner {
                 "\tBye.\n";
 
         AbstractParser expressionParser = new ExpressionToValueParser();
-        AbstractParser nextParser = expressionParser;
-        AbstractParser parser;
-        for (TextComponentType textComponentType : TextComponentType.values()) {
-            if (textComponentType != TextComponentType.SYMBOL) {
-                parser = new TextComponentParser(textComponentType);
-            } else {
-                parser = new SymbolToTextLeafParser();
-            }
-            nextParser.setNextParser(parser);
-            nextParser = parser;
-        }
+        AbstractParser textParser = new TextComponentParser(TextComponentType.TEXT);
+        AbstractParser paragraphParser = new TextComponentParser(TextComponentType.PARAGRAPH);
+        AbstractParser sentenceParser = new TextComponentParser(TextComponentType.SENTENCE);
+        AbstractParser lexemeParser = new TextComponentParser(TextComponentType.LEXEME);
+        AbstractParser wordParser = new TextComponentParser(TextComponentType.WORD);
+        AbstractParser symbolParser = new SymbolToTextLeafParser();
+
+        expressionParser.setNextParser(textParser);
+        textParser.setNextParser(paragraphParser);
+        paragraphParser.setNextParser(sentenceParser);
+        sentenceParser.setNextParser(lexemeParser);
+        lexemeParser.setNextParser(wordParser);
+        wordParser.setNextParser(symbolParser);
 
         try {
             TextComponent textComponent = expressionParser.parse(sourceText);
 
-            System.out.println("---------Source:");
-            System.out.println(sourceText);
-            System.out.println("---------After replacing and parsing");
-            System.out.println(textComponent.toString());
+            LOG.trace("---------Source:");
+            LOG.trace("\n{}", sourceText);
+            LOG.trace("---------After replacing and parsing");
+            LOG.trace("\n{}", textComponent);
             ParagraphsBySentenceCountSorter sorter = new ParagraphsBySentenceCountSorter();
             sorter.sortParagraphsBySentenceCount(textComponent);
-            System.out.println("---------After sorting paragraphs by sentence count");
-            System.out.println(textComponent.toString());
+            LOG.trace("---------After sorting paragraphs by sentence count");
+            LOG.trace("\n{}", textComponent);
 
         } catch (TextParseException | SortException e) {
             LOG.error(e);
