@@ -1,5 +1,6 @@
 package by.kiselevich.parsingtask.utils;
 
+import by.kiselevich.parsingtask.exception.WrongExpressionException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +18,7 @@ public class InfixToReversePolishNotationParser {
 
     private int index;
 
-    public List<String> convertInfixToReversePolishNotation(String expression) {
+    public List<String> convertInfixToReversePolishNotation(String expression) throws WrongExpressionException {
 
         expression = expression.replace(SINGLE_SPACE, EMPTY_STRING);
         List<String> result = new ArrayList<>();
@@ -69,7 +70,7 @@ public class InfixToReversePolishNotationParser {
         return operator;
     }
 
-    private int putHighPriorityOperatorsFromStackToResult(List<String> result, Deque<String> stack, int index, String currentOperator) {
+    private int putHighPriorityOperatorsFromStackToResult(List<String> result, Deque<String> stack, int index, String currentOperator) throws WrongExpressionException {
         String stackElement;
         while (!stack.isEmpty()) {
             stackElement = stack.removeFirst();
@@ -101,7 +102,7 @@ public class InfixToReversePolishNotationParser {
         return index;
     }
 
-    private int getOperatorPriority(String operator) {
+    private int getOperatorPriority(String operator) throws WrongExpressionException {
         switch (operator) {
             case NOT_OPERATOR:
                 return 1;
@@ -124,7 +125,7 @@ public class InfixToReversePolishNotationParser {
             case CLOSING_BRACKET_OPERATOR:
                 return 9;
             default:
-                return 10;
+                throw new WrongExpressionException();
         }
     }
 }
